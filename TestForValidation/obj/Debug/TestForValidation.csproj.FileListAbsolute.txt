@@ -41,3 +41,6 @@ C:\Users\chidadha\Documents\Visual Studio 2015\Projects\CRUDUsingWebApi\TestForV
 C:\Users\chidadha\Documents\Visual Studio 2015\Projects\CRUDUsingWebApi\TestForValidation\obj\Debug\TestForValidation.csprojResolveAssemblyReference.cache
 C:\Users\chidadha\Documents\Visual Studio 2015\Projects\CRUDUsingWebApi\TestForValidation\obj\Debug\TestForValidation.dll
 C:\Users\chidadha\Documents\Visual Studio 2015\Projects\CRUDUsingWebApi\TestForValidation\obj\Debug\TestForValidation.pdb
+C:\Users\chidadha\Documents\Visual Studio 2015\Projects\CRUDUsingWebApi\TestForValidation\bin\Debug\TestForValidation.dll.config
+C:\Users\chidadha\Documents\Visual Studio 2015\Projects\CRUDUsingWebApi\TestForValidation\bin\Debug\Rhino.Mocks.dll
+C:\Users\chidadha\Documents\Visual Studio 2015\Projects\CRUDUsingWebApi\TestForValidation\bin\Debug\Rhino.Mocks.xml

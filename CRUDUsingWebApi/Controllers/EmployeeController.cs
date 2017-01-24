@@ -42,7 +42,7 @@ namespace CRUDUsingWebApi.Controllers
 
     public class EmployeeController : ApiController
     {
-        readonly EmployeeRepository employeeRepository=new EmployeeRepository();
+        readonly EmployeeRepository employeeRepository = new EmployeeRepository();
 
         //public EmployeeController()
         //{
@@ -72,68 +72,68 @@ namespace CRUDUsingWebApi.Controllers
         public HttpResponseMessage PostEmployee(Employee employee)
         {
             Validation v = new Validation();
-            if (!v.ValidateName(employee.fname))
+            //if (!v.ValidateName(employee.fname))
+            //{
+            //    throw new Exception("First name is not valid");
+            //}
+            //else if (!v.ValidateName(employee.lname))
+            //{
+            //    throw new Exception("Last name is not valid");
+            //}
+            //else if (!v.ValidateEmail(employee.email))
+            //{
+            //    throw new Exception("Email is not valid");
+            //}
+            //else
+            //{
+            int result = v.InsertEmployee(employee);
+            //employeeRepository.Add(employee);
+            if (result == 1)
             {
-                throw new Exception("First name is not valid");
-            }
-            else if (!v.ValidateName(employee.lname))
-            {
-                throw new Exception("Last name is not valid");
-            }
-            else if (!v.ValidateEmail(employee.email))
-            {
-                throw new Exception("Email is not valid");
+                var response = Request.CreateResponse<Employee>(HttpStatusCode.Created, employee);
+                string uri = Url.Link("DefaultApi", new { email = employee.email });
+                response.Headers.Location = new Uri(uri);
+                return response;
             }
             else
             {
-                bool result = employeeRepository.Add(employee);
-                if (result)
-                {
-                    var response = Request.CreateResponse<Employee>(HttpStatusCode.Created, employee);
-                    string uri = Url.Link("DefaultApi", new { email = employee.email });
-                    response.Headers.Location = new Uri(uri);
-                    return response;
-                }
-                else
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Student Not Added");
-                }
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Student Not Added");
             }
         }
 
         public HttpResponseMessage PutEmployee(int id, Employee employee)
         {
             Validation v = new Validation();
-            if (!v.ValidateName(employee.fname))
+            //if (!v.ValidateName(employee.fname))
+            //{
+            //    throw new Exception("First name is not valid");
+            //}
+            //else if (!v.ValidateName(employee.lname))
+            //{
+            //    throw new Exception("Last name is not valid");
+            //}
+            //else if (!v.ValidateEmail(employee.email))
+            //{
+            //    throw new Exception("Email is not valid");
+            //}
+            //else
+            //{
+            employee.id = id;
+
+            if (!employeeRepository.Update(employee))
             {
-                throw new Exception("First name is not valid");
-            }
-            else if (!v.ValidateName(employee.lname))
-            {
-                throw new Exception("Last name is not valid");
-            }
-            else if (!v.ValidateEmail(employee.email))
-            {
-                throw new Exception("Email is not valid");
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Unable to Update the Student for the Given ID");
             }
             else
             {
-                employee.id = id;
-                if (!employeeRepository.Update(employee))
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Unable to Update the Student for the Given ID");
-                }
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK);
-                }
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
         }
 
-        //public HttpResponseMessage DeleteEmployee(int id)
-        //{
-        //    employeeRepository.Remove(id);
-        //    return new HttpResponseMessage(HttpStatusCode.NoContent);
-        //}
+        public HttpResponseMessage DeleteEmployee(int id)
+        {
+            employeeRepository.Delete(id);
+            return new HttpResponseMessage(HttpStatusCode.NoContent);
+        }
     }
 }

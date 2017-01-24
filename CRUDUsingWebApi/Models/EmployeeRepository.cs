@@ -90,11 +90,16 @@ namespace CRUDUsingWebApi.Models
             {
                 using (var cmd = new SqlCommand())
                 {
+                    string status;
+                    if (employee.status.Equals("true"))
+                        status = "activated";
+                    else
+                        status="deactivated";
                     cmd.CommandText = "insert into Details(fname,lname,email,status,id) values(@fname,@lname,@email,@status,@id)";
                     cmd.Parameters.AddWithValue("@fname", employee.fname);
                     cmd.Parameters.AddWithValue("@lname", employee.lname);
                     cmd.Parameters.AddWithValue("@email", employee.email);
-                    cmd.Parameters.AddWithValue("@status", "activated");
+                    cmd.Parameters.AddWithValue("@status", status);
                     cmd.Parameters.AddWithValue("@id", employee.id);
                     cmd.Connection = GetOpenDataConnection(".", "Test", "sa", "Install02");
                     int row = cmd.ExecuteNonQuery();
@@ -168,9 +173,50 @@ namespace CRUDUsingWebApi.Models
             return false;
         }
 
-        //public void Remove(string email)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public void Delete(int id)
+        {
+            //int index = employees.FindIndex(s => s.id == employee.id);
+            //if (index == -1)
+            //{
+            //    return false;
+            //}
+            //employees.RemoveAt(index);
+            //employees.Add(employee);
+
+            using (var cmd = new SqlCommand())
+            {
+                cmd.CommandText = "select * from Details;";
+                cmd.Connection = GetOpenDataConnection(".", "Test", "sa", "Install02");
+                Employee em; // new Employee();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    em = new Employee();
+                    em.fname = reader[0].ToString();
+                    em.email = reader[2].ToString();
+                    em.status = reader[3].ToString();
+                    em.id = Convert.ToInt32(reader[4]);
+                    if (em.id == id)
+                    {
+                        var cmd_update = new SqlCommand();
+                        cmd_update.Connection = GetOpenDataConnection(".", "Test", "sa", "Install02");
+                        cmd_update.CommandText = "Delete from Details where id=@id";
+                        //cmd_update.Parameters.AddWithValue("@status", employee.status);
+                        cmd_update.Parameters.AddWithValue("@id", id);
+                        if (em.status.Equals("deactivated"))
+                        {
+                            int row = cmd_update.ExecuteNonQuery();
+                            if (row != 0)
+                            {
+                                cmd_update.Connection.Close();
+                            }
+                        }
+                    }
+                }
+                cmd.Connection.Close();
+            }
+
+            //return false;
+        }
     }
 }

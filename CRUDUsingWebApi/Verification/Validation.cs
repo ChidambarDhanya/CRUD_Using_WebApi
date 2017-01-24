@@ -1,19 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using CRUDUsingWebApi.Models;
 using System.Net.Mail;
-
 namespace CRUDUsingWebApi.Verification
 {
+    public class InvalidException : System.Exception
+    {
+        public InvalidException(string s) : base(s)
+        {
+
+        }
+    }
     public class Validation
     {
-        IEmployeeRepository employeeRepository;
+        private readonly IEmployeeRepository _emp;
 
-        Validation()
+        public Validation()
         {
-            employeeRepository = new EmployeeRepository();
+            _emp = new EmployeeRepository();
+        }
+
+        public Validation(IEmployeeRepository employee)
+        {
+
+            if (employee != null)
+
+                _emp = employee;
+
         }
         public bool ValidateAll(Employee em)
         {
@@ -37,25 +50,65 @@ namespace CRUDUsingWebApi.Verification
                 try
                 {
                     MailAddress m = new MailAddress(email);
-
                     return true;
                 }
                 catch (Exception e)
                 {
-                    //return false;
                     throw new Exception("Email error");
+                   
                 }
             }
         }
 
-        public bool ValidateAndExecuteUpdate(Employee em)
-        {
-           
-            if(ValidateAll(em))
+        public IEnumerable<Employee> GetAll()
+
             {
 
-            }
-        }
+                return _emp.GetAll();
 
-    }
+            }
+
+
+
+            public Employee Get(int EmployeeID)
+
+            {
+
+                return _emp.Get(EmployeeID);
+
+            }
+
+
+
+            public int InsertEmployee(Employee newEmployee)
+
+            {
+            bool status=false;
+                if (ValidateAll(newEmployee))
+                {
+                    status = _emp.Add(newEmployee);
+                }
+                if (status == true)
+
+                    return 1;
+
+                else
+
+                    return 0;
+            }
+            public int UpdateEmployee(Employee updateEmployee)
+            {
+
+            if (ValidateAll(updateEmployee))
+            {
+                bool status=_emp.Update(updateEmployee);
+                if (status == true)
+                    return 1;
+                else return 0;
+            }
+            else
+                return 0;
+
+            }
+     }
 }

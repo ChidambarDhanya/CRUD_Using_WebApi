@@ -57,3 +57,5 @@ c:\users\chidadha\documents\visual studio 2015\Projects\CRUDUsingWebApi\CRUDUsin
 c:\users\chidadha\documents\visual studio 2015\Projects\CRUDUsingWebApi\CRUDUsingWebApi\obj\Debug\CRUDUsingWebApi.dll
 c:\users\chidadha\documents\visual studio 2015\Projects\CRUDUsingWebApi\CRUDUsingWebApi\obj\Debug\CRUDUsingWebApi.pdb
 C:\Users\chidadha\Documents\Visual Studio 2015\Projects\CRUDUsingWebApi\CRUDUsingWebApi\obj\Debug\CRUDUsingWebApi.csprojResolveAssemblyReference.cache
+C:\Users\chidadha\Documents\Visual Studio 2015\Projects\CRUDUsingWebApi\CRUDUsingWebApi\bin\Rhino.Mocks.dll
+C:\Users\chidadha\Documents\Visual Studio 2015\Projects\CRUDUsingWebApi\CRUDUsingWebApi\bin\Rhino.Mocks.xml
