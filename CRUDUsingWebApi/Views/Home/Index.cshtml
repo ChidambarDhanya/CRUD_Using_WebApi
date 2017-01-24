@@ -1,0 +1,204 @@
+﻿<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script type="text/javascript">
+
+    //Load the students in the List and displays when the documnet is loaded
+    $(document).ready(function () {
+        jQuery.support.cors = true;
+        $.ajax({
+            url: 'api/employee',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                WriteResponses(data);
+            },
+            error: function (x, y, z) {
+                alert(x + '\n' + y + '\n' + z);
+            }
+        });
+
+        //Displays in a Table
+        function WriteResponses(students) {
+            var strResult = "<table><th>Name</th><th>Student ID</th><th>Gender</th><th>Age</th>";
+            $.each(students, function (index, student) {
+                strResult += "<tr><td>" + student.fname + "</td><td> " + student.id + "</td><td>" + student.lname + "</td><td>" + student.email + "</td></tr>";
+            });
+            strResult += "</table>";
+            $("#divResult").html(strResult);
+        }
+
+    });
+
+    //Get a Particular Student based on ID
+    function GetStudent() {
+        jQuery.support.cors = true;
+        $.ajax({
+            url: 'http://localhost:7937/api/employee/' + document.getElementById('GetId').value,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                WriteResponse(data);
+            },
+            error: function (x, y, z) {
+                alert('The Student not found in the List for the given ID');
+            }
+        });
+
+        function WriteResponse(student) {
+            document.getElementById('fname').innerHTML = "<h3>" + student.fname + "</h3>";
+            document.getElementById('lname').innerHTML = "<h3>" + student.lname + "</h3>";
+            document.getElementById('email').innerHTML = "<h3>" + student.id + "</h3>";
+            document.getElementById('status').innerHTML = "<h3>" + student.email + "</h3>";
+        }
+    }
+
+    //Adds a Student to the List
+    function AddStudent() {
+        var student={
+            fname: document.getElementById('FirstName').value,
+            lname: document.getElementById('LastName').value,
+            email: document.getElementById('Email').value,
+            id: document.getElementById('ID').value
+        };
+        var json = JSON.stringify(student);
+        $.ajax({
+            url: 'http://localhost:7937/api/employee/',
+            type: 'POST',
+            data:json,
+            contentType: "application/json;charset=utf-8",
+            //dataType:'json',
+            success: function (message) {
+                alert('Student added Successfully');
+                GetAllStudents();
+            },
+            error: function () {
+                alert('Student not Added');
+            }
+        });
+        //$.post("http://localhost:7937/api/employee", {employee:json},function (data) {
+        //    alert("hey"+json);
+        //});
+    }
+
+    //Updates the student Details in the List
+    function PutStudent() {
+        var student = {
+            fname: document.getElementById('FirstName').value,
+            lname: document.getElementById('LastName').value,
+            email: document.getElementById('Email').value,
+            id: document.getElementById('ID').value
+        };
+
+        $.ajax({
+            url: 'http://localhost:7937/api/employee/' + document.getElementById('ID').value,
+            type: 'PUT',
+            data: JSON.stringify(student),
+            contentType: "application/json;charset=utf-8",
+            success: function (data) {
+                alert('Details Updated Successfully');
+                GetAllStudents();
+            },
+            error: function () {
+                alert('Unable to Update for the Given ID');
+            }
+        });
+    }
+
+    function GetAllStudents() {
+        jQuery.support.cors = true;
+        $.ajax({
+            url: 'http://localhost:7937/api/employee',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                WriteResponses(data);
+            },
+            error: function (x, y, z) {
+                alert(x + '\n' + y + '\n' + z);
+            }
+        });
+
+        //Displays in a Table
+        function WriteResponses(students) {
+            var strResult = "<table><th>Name</th><th>Student ID</th><th>Gender</th><th>Age</th>";
+            $.each(students, function (index, student) {
+                strResult += "<tr><td>" + student.fname + "</td><td> " + student.lname + "</td><td>" + student.id + "</td><td>" + student.email + "</td></tr>";
+            });
+            strResult += "</table>";
+            $("#divResult").html(strResult);
+        }
+    }
+
+</script>
+
+<h1 style="color: #f00">List of students </h1>
+<div id="divResult" style="margin-left: 15px"></div>
+
+<div>
+    <h1 style="color: #f00">Get a Student </h1>
+</div>
+<div style="margin-left: 15px">
+    <h3>Enter the Student ID:</h3>
+    <input id="GetId" type="text" />
+    <button id="GetStudent" onclick="GetStudent()">Get Student</button>
+</div>
+<div style="margin-left: 15px">
+    <table>
+        <tr>
+            <td>
+                <h3>First Name</h3>
+            </td>
+            <td><span id="fname"></span></td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Last Name</h3>
+            </td>
+            <td><span id="lname"></span></td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Email</h3>
+            </td>
+            <td><span id="email"></span></td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Status</h3>
+            </td>
+            <td><span id="status"></span></td>
+        </tr>
+    </table>
+</div>
+<div>
+    <h1 style="color: #f00">Add or Update a Student </h1>
+    <table style="margin-left: 15px">
+        <tr>
+            <td><span>Name</span></td>
+            <td>
+                <input id="FirstName" type="text" /></td>
+        </tr>
+        <tr>
+            <td><span>Last name</span></td>
+            <td>
+                <input id="LastName" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td><span>ID</span></td>
+            <td>
+                <input id="ID" type="number" /></td>
+        </tr>
+        
+        <tr>
+            <td><span>Email</span></td>
+            <td>
+                <input id="Email" type="text" /></td>
+        </tr>
+        <tr>
+            <td>
+                <button id="postStudent" onclick="AddStudent()">Add New Student</button></td>
+            <td>
+                <button id="putStudent" onclick="PutStudent()">Update Student</button></td>
+        </tr>
+    </table>
+</div>
