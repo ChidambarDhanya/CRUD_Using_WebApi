@@ -118,22 +118,33 @@ namespace CRUDUsingWebApi.Controllers
             //}
             //else
             //{
+            bool status=v.ValidateAll(employee);
             employee.id = id;
+            //if (status)
+            //{
+                if (!employeeRepository.Update(employee))
+                { 
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Unable to Update the employee for the Given ID");
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+            //}
+        }
 
-            if (!employeeRepository.Update(employee))
+        public HttpResponseMessage DeleteEmployee(int id)
+        {
+            //employeeRepository.Delete(id);
+            //return new HttpResponseMessage(HttpStatusCode.NoContent);
+            if (!employeeRepository.Delete(id))
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Unable to Update the Student for the Given ID");
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Unable to Delete the empoyee for the Given ID");
             }
             else
             {
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
-        }
-
-        public HttpResponseMessage DeleteEmployee(int id)
-        {
-            employeeRepository.Delete(id);
-            return new HttpResponseMessage(HttpStatusCode.NoContent);
         }
     }
 }

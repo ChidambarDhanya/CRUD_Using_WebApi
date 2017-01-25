@@ -11,7 +11,7 @@ namespace CRUDUsingWebApi.Models
         IEnumerable<Employee> GetAll();
         Employee Get(int id);
         bool Add(Employee student);
-        void Delete(int id);
+        bool Delete(int id);
         bool Update(Employee student);
     }
 }

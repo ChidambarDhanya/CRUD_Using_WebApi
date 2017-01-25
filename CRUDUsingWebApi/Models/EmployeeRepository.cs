@@ -151,11 +151,11 @@ namespace CRUDUsingWebApi.Models
                     {
                         var cmd_update = new SqlCommand();
                         cmd_update.Connection = GetOpenDataConnection(".", "Test", "sa", "Install02");
-                        cmd_update.CommandText = "update Details set fname=@fname, lname=@lname  ,email=@email where id=@id";
+                        cmd_update.CommandText = "update Details set fname=@fname, lname=@lname,status=@status,email=@email where id=@id";
                         cmd_update.Parameters.AddWithValue("@fname", employee.fname);
                         cmd_update.Parameters.AddWithValue("@lname", employee.lname);
                         cmd_update.Parameters.AddWithValue("@email", employee.email);
-                        //cmd_update.Parameters.AddWithValue("@status", employee.status);
+                        cmd_update.Parameters.AddWithValue("@status", employee.status);
                         cmd_update.Parameters.AddWithValue("@id", employee.id);
 
                         int row = cmd_update.ExecuteNonQuery();
@@ -173,7 +173,7 @@ namespace CRUDUsingWebApi.Models
             return false;
         }
 
-        public void Delete(int id)
+        public bool Delete(int id)
         {
             //int index = employees.FindIndex(s => s.id == employee.id);
             //if (index == -1)
@@ -209,6 +209,7 @@ namespace CRUDUsingWebApi.Models
                             if (row != 0)
                             {
                                 cmd_update.Connection.Close();
+                                return true;
                             }
                         }
                     }
@@ -216,7 +217,7 @@ namespace CRUDUsingWebApi.Models
                 cmd.Connection.Close();
             }
 
-            //return false;
+            return false;
         }
     }
 }
